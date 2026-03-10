@@ -1,3 +1,4 @@
+// Компилиране: g++ -o 4 4.cpp Group.cpp Student.cpp
 #include "Group.h"
 
 template <typename T>

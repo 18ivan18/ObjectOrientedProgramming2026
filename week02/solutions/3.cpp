@@ -1,3 +1,4 @@
+// Компилиране: g++ -o 3 3.cpp Group.cpp Student.cpp
 #include "Group.h"
 
 int main()
