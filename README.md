@@ -7,3 +7,5 @@
 #### :two: Data alignment, structs
 
 #### :three: Classes, methods, this
+
+#### :four: Constructor, Destructor
