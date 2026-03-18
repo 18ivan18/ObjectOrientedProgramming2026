@@ -9,3 +9,5 @@
 #### :three: Classes, methods, this
 
 #### :four: Constructor, Destructor
+
+#### :five: Copy constructor, copy assignment operator
