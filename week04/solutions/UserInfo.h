@@ -21,4 +21,6 @@ public:
     void setPassword(const char *password);
 };
 
+char *copyString(const char *str);
+
 #endif

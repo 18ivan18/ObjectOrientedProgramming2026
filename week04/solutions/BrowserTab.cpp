@@ -13,12 +13,7 @@ char *copyString(const char *str)
     return copy;
 }
 
-BrowserTab::BrowserTab() : url(copyString("")), htmlContent(copyString(""))
-{
-}
-
-BrowserTab::BrowserTab(const BrowserTab &other)
-    : url(copyString(other.url)), htmlContent(copyString(other.htmlContent))
+BrowserTab::BrowserTab() : url(nullptr), htmlContent(nullptr)
 {
 }
 
@@ -29,18 +24,17 @@ BrowserTab::BrowserTab(const char *u, const char *html)
 
 BrowserTab::~BrowserTab()
 {
-    delete[] url;
-    delete[] htmlContent;
+    clear();
 }
 
 const char *BrowserTab::getUrl() const
 {
-    return url;
+    return url ? url : "";
 }
 
 const char *BrowserTab::getHtmlContent() const
 {
-    return htmlContent;
+    return htmlContent ? htmlContent : "";
 }
 
 void BrowserTab::setUrl(const char *u)
@@ -57,7 +51,7 @@ void BrowserTab::setHtmlContent(const char *html)
 
 bool BrowserTab::isEmpty() const
 {
-    return (url == nullptr && htmlContent == nullptr);
+    return url == nullptr && htmlContent == nullptr;
 }
 
 void BrowserTab::clear()
@@ -70,8 +64,7 @@ void BrowserTab::clear()
 
 void BrowserTab::loadFrom(const BrowserTab &other)
 {
-    delete[] url;
-    delete[] htmlContent;
+    clear();
     url = copyString(other.url);
     htmlContent = copyString(other.htmlContent);
 }

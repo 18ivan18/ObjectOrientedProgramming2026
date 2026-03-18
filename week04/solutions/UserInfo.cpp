@@ -3,7 +3,7 @@
 
 char *copyString(const char *str)
 {
-    if (!str){
+    if (!str) {
         return nullptr;
     }
     size_t len = strlen(str) + 1;
@@ -12,16 +12,16 @@ char *copyString(const char *str)
     return copy;
 }
 
-UserInfo::UserInfo() : username(copyString("")), password(copyString(""))
+UserInfo::UserInfo() : username(nullptr), password(nullptr)
 {
 }
 
-UserInfo::UserInfo(const char *user) : username(copyString(user ? user : "")), password(copyString(""))
+UserInfo::UserInfo(const char *user) : username(copyString(user)), password(nullptr)
 {
 }
 
 UserInfo::UserInfo(const char *user, const char *pass)
-    : username(copyString(user ? user : "")), password(copyString(pass ? pass : ""))
+    : username(copyString(user)), password(copyString(pass))
 {
 }
 
@@ -33,12 +33,12 @@ UserInfo::~UserInfo()
 
 const char *UserInfo::getUsername() const
 {
-    return username;
+    return username ? username : "";
 }
 
 const char *UserInfo::getPassword() const
 {
-    return password;
+    return password ? password : "";
 }
 
 void UserInfo::setUsername(const char *user)
