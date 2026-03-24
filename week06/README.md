@@ -73,6 +73,75 @@ int main()
 }
 ```
 
+## Упражнение: move semantics на практика
+
+На упражнение целта е да видите **кога компилаторът избира copy срещу move** и как **оптимизациите (RVO / elision)** „скриват“ извиквания, които иначе биха се появили в кода.
+
+### Какво очакваме да се извика (ако класът има Rule of Five)
+
+| Ситуация | Обикновено се извиква |
+|----------|------------------------|
+| `T b = a;` където `a` е **lvalue** (има име и още се ползва) | **copy constructor** |
+| `T b = временен_обект;` или `T b = std::move(a);` | **move constructor** (ако съществува и източникът е rvalue/xvalue) |
+| `b = a;` с lvalue `a` | **copy assignment** |
+| `b = временен;` или `b = std::move(a);` | **move assignment** (ако съществува) |
+
+**Забележки:**
+
+- Move конструкторът и move assignment се използват **само ако са дефинирани** (или генерирани подходящо) и изразът отдясно е **rvalue** или **xvalue** (напр. след `std::move`).
+- `std::move(x)` **не мести** сам по себе си — прави cast, така че overload resolution да избере move, ако е възможно. След това **не** разчитайте, че `x` е валиден за ползване (освен да му присвоите нова стойност или да го унищожите).
+
+### RVO и copy/move elision
+
+**RVO (Return Value Optimization)** — при `return локална_променлива;` или `return T(args);` компилаторът може да **конструира обекта директно на мястото на получателя**, без междинно копие или мув. Това е **разрешена оптимизация** (mandatory copy elision в определени случаи от C++17 нагоре).
+
+**Copy/move elision** по-общо — компилаторът **пропуска** извикване на copy/move конструктор дори когато по правилата на езика би могъл да го извика, ако може да докаже еквивалентно поведение.
+
+Практически ефект: в реален код често **няма да видите** move constructor при `return` от функция или при инициализация с временен обект — не защото move „не работи“, а защото обектът се създава **на място**.
+
+### Демо с `MemoryBlock` и `std::cout` в copy/move
+
+Класът [`MemoryBlock`](examples/MemoryBlock/MemoryBlock.h) вече отпечатва при всеки конструктор, деструктор и оператор за присвояване. Сценариите за упражнение са в [`examples/MemoryBlock/main.cpp`](examples/MemoryBlock/main.cpp): инициализация от lvalue и от временен обект, `std::move`, присвояване от `makeMemoryBlock()`, както и допълнителен пример с `std::vector<MemoryBlock>`.
+
+**Компилиране с изключена elision** (за учебни цели — виждате повече copy/move извиквания). Флагът `-fno-elide-constructors` казва на GCC и Clang да **не** прилагат copy/move elision, за да се появят в изхода съответните конструктори.
+
+От директорията `week06/examples/MemoryBlock`:
+
+```bash
+g++ -std=c++17 -fno-elide-constructors -o memory_block_demo main.cpp
+./memory_block_demo
+```
+
+```bash
+clang++ -std=c++17 -fno-elide-constructors -o memory_block_demo main.cpp
+./memory_block_demo
+```
+
+От директорията `week06`:
+
+```bash
+g++ -std=c++17 -fno-elide-constructors -o memory_block_demo examples/MemoryBlock/main.cpp
+./memory_block_demo
+```
+
+От корена на хранилището:
+
+```bash
+g++ -std=c++17 -fno-elide-constructors -o memory_block_demo week06/examples/MemoryBlock/main.cpp
+./memory_block_demo
+```
+
+**С включена elision** (по подразбиране — по-малко или никакви „излишни“ конструктори в изхода):
+
+```bash
+g++ -std=c++17 -o memory_block_demo examples/MemoryBlock/main.cpp
+./memory_block_demo
+```
+
+(Пуснете от същата работна директория като по-горе.)
+
+Сравнете двата изхода: без elision ще видите повече редове за move/copy; с elision част от тях изчезват — това илюстрира разликата между „какво пише в стандарта“ и „какво генерира компилаторът“.
+
 # Задачи
 
 ## Задача 1
