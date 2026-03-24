@@ -11,3 +11,5 @@
 #### :four: Constructor, Destructor
 
 #### :five: Copy constructor, copy assignment operator
+
+#### :six: Move semantics

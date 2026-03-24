@@ -33,3 +33,4 @@
 
 # binary files
 *.dat
+.cursor
