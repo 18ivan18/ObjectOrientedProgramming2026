@@ -4,7 +4,7 @@
 #include <cstring>
 
 // Парсва ред от вида id|score|име без sscanf — модифицира буфера line на място.
-inline bool parseRecordLine(char* line, int& id, double& score, char* nameBuf, size_t nameMax) {
+bool parseRecordLine(char* line, int& id, double& score, char* nameBuf, size_t nameMax) {
     char* p1 = std::strchr(line, '|');
     if (p1 == nullptr) {
         return false;

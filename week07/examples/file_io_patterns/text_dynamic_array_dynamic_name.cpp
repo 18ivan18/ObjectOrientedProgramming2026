@@ -1,8 +1,8 @@
 // Текстов файл с RecordDynamic: същият текстов формат като при Record; при зареждане new RecordDynamic[n].
 
-#include "RecordDynamicTextFormat.h"
 #include <fstream>
 #include <iostream>
+#include "RecordDynamic.h"
 
 
 bool saveRecords(const char* path, const RecordDynamic* records, size_t count) {

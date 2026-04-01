@@ -1,8 +1,8 @@
 // Текстов файл: брой записи + редове; при зареждане new Record[n] (същият формат като при фиксиран MAX — само буферът е друг).
 
-#include "RecordTextFormat.h"
 #include <fstream>
 #include <iostream>
+#include "Record.h"
 
 bool saveRecords(const char* path, const Record* records, size_t count) {
     std::ofstream out(path);

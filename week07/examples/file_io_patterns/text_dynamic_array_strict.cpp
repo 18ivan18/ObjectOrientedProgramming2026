@@ -4,7 +4,6 @@
 // `new StrictRecord(id, score, name)` след парсване на реда. Освобождаване: за всеки
 // `delete arr[i]`, накрая `delete[] arr`.
 
-#include "StrictRecordTextFormat.h"
 #include "parse_record_line.h"
 #include <fstream>
 #include <iostream>

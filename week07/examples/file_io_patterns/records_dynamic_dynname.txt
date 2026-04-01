@@ -1,3 +1,0 @@
-2
-10|4.5|First
-20|5|Second with spaces

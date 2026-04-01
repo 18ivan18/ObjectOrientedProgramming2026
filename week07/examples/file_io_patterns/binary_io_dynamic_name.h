@@ -5,7 +5,7 @@
 #include <fstream>
 
 // Двоичен формат: id, score, дължина на името, байтове на името.
-inline bool writeRecordBinary(std::ofstream& out, const RecordDynamic& r) {
+bool writeRecordBinary(std::ofstream& out, const RecordDynamic& r) {
     int id = r.getId();
     double score = r.getScore();
     out.write((const char*)&id, sizeof(id));
@@ -22,7 +22,7 @@ inline bool writeRecordBinary(std::ofstream& out, const RecordDynamic& r) {
     return out.good();
 }
 
-inline bool readRecordBinary(std::ifstream& in, RecordDynamic& r) {
+bool readRecordBinary(std::ifstream& in, RecordDynamic& r) {
     int id = 0;
     double score = 0.0;
     in.read((char*)&id, sizeof(id));
