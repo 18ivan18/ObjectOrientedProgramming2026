@@ -15,3 +15,5 @@
 #### :six: Move semantics
 
 #### :seven: File streams
+
+#### :eight: Inheritance
