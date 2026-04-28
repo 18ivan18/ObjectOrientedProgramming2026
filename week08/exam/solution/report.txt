@@ -1,0 +1,18 @@
+Брой поръчки за изпълнение: 2
+
+--- Поръчка 1 ---
+Маса: 5
+Час: 12:30
+Ястия и продукти:
+  * musaka
+      Продукти: patatos | minced meat | onion | carrot
+
+--- Поръчка 2 ---
+Маса: 3
+Час: 9:15
+Ястия и продукти:
+  * musaka
+      Продукти: patatos | minced meat | onion | carrot
+  * fried eggs
+      Продукти: eggs | oil
+

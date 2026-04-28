@@ -343,10 +343,6 @@ Car& Car::operator=(const Car &objectToCopyFrom) {
 
 # Задача 4:
 
-Да се направи реализация на `String`, който наследява `Vector<char>`
-
-# Задача 5:
-
 Напишете клас `Person`, който има следните свойства:
 
 - Име
