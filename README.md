@@ -17,3 +17,5 @@
 #### :seven: File streams
 
 #### :eight: Inheritance
+
+#### :nine: Generics and statisc
