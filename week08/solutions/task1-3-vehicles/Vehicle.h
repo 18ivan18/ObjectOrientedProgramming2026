@@ -1,19 +1,19 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
+#include <fstream>
 #include "../../string/String.h"
 
-#include <iosfwd>
-
-class Vehicle {
+class Vehicle
+{
 public:
-    Vehicle(const String& make, const String& model, int horsepower);
+    Vehicle(const String &make, const String &model, int horsepower);
 
-    const String& getMake() const;
-    const String& getModel() const;
+    const String &getMake() const;
+    const String &getModel() const;
     int getHorsepower() const;
 
-    void print(std::ostream& os) const;
+    void print(std::ostream &os) const;
 
 protected:
     void setHorsepower(int horsepower);

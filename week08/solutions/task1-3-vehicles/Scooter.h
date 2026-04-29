@@ -3,18 +3,19 @@
 
 #include "Motorcycle.h"
 
-class Scooter : public Motorcycle {
+class Scooter : public Motorcycle
+{
 public:
-    Scooter(const String& make,
-            const String& model,
+    Scooter(const String &make,
+            const String &model,
             int capacityLuggage,
             int maxCapacityOfDriver,
-            const String& color);
+            const String &color);
 
     int getMaxCapacityOfDriver() const;
-    const String& getColor() const;
+    const String &getColor() const;
 
-    void print(std::ostream& os) const override;
+    void print(std::ostream &os) const;
 
 private:
     int maxCapacityOfDriver = 0;

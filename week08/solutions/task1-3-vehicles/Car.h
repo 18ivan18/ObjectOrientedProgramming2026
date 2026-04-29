@@ -4,14 +4,15 @@
 #include "FuelType.h"
 #include "Vehicle.h"
 
-class Car : public Vehicle {
+class Car : public Vehicle
+{
 public:
-    Car(const String& make, const String& model, int horsepower, int seats, FuelType fuelType);
+    Car(const String &make, const String &model, int horsepower, int seats, FuelType fuelType);
 
     int getSeats() const;
     FuelType getFuelType() const;
 
-    void print(std::ostream& os) const override;
+    void print(std::ostream &os) const;
 
 private:
     int seats = 0;

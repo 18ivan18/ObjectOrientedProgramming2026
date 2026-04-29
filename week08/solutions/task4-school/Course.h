@@ -5,6 +5,7 @@
 
 class Course {
 public:
+    Course() = default;
     Course(const String& name, const Teacher& teacher, double grade);
 
     const String& getName() const;

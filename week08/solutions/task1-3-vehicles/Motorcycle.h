@@ -3,13 +3,14 @@
 
 #include "Vehicle.h"
 
-class Motorcycle : public Vehicle {
+class Motorcycle : public Vehicle
+{
 public:
-    Motorcycle(const String& make, const String& model, int horsepower, int capacityLuggage);
+    Motorcycle(const String &make, const String &model, int horsepower, int capacityLuggage);
 
     int getCapacityLuggage() const;
 
-    void print(std::ostream& os) const override;
+    void print(std::ostream &os) const;
 
 private:
     int capacityLuggage = 0;
