@@ -2,7 +2,7 @@
 
 #include "Time.h"
 #include <cstddef>
-#include <iosfwd>
+#include <fstream>
 
 const size_t ORDER_MAX_DISH_NAME_LEN = 127;
 const size_t ORDER_MAX_DISHES = 128;

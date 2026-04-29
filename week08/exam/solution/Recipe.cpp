@@ -1,11 +1,12 @@
 #include "Recipe.h"
 #include <cstring>
-#include <new>
-#include <utility>
 
+#include <cstddef>   // size_t
+#include <algorithm> // std::move
 void Recipe::freeProducts()
 {
-    for (size_t i = 0; i < productCount; i++) {
+    for (size_t i = 0; i < productCount; i++)
+    {
         delete[] products[i];
     }
     delete[] products;
@@ -16,7 +17,8 @@ void Recipe::freeProducts()
 
 char *Recipe::copyStr(const char *s)
 {
-    if (s == nullptr) {
+    if (s == nullptr)
+    {
         return nullptr;
     }
     size_t len = std::strlen(s);
@@ -29,7 +31,8 @@ void Recipe::growProducts()
 {
     size_t newCap = productCapacity == 0 ? 4 : productCapacity * 2;
     char **next = new char *[newCap];
-    for (size_t i = 0; i < productCount; i++) {
+    for (size_t i = 0; i < productCount; i++)
+    {
         next[i] = products[i];
     }
     delete[] products;
@@ -45,7 +48,8 @@ Recipe::Recipe() : products(nullptr), productCount(0), productCapacity(0)
 Recipe::Recipe(const char *name) : products(nullptr), productCount(0), productCapacity(0)
 {
     dishName[0] = '\0';
-    if (name != nullptr && std::strlen(name) > 0) {
+    if (name != nullptr && std::strlen(name) > 0)
+    {
         setDishName(name);
     }
 }
@@ -53,7 +57,8 @@ Recipe::Recipe(const char *name) : products(nullptr), productCount(0), productCa
 Recipe::Recipe(const Recipe &other) : products(nullptr), productCount(0), productCapacity(0)
 {
     strcpy(dishName, other.dishName);
-    for (size_t i = 0; i < other.productCount; i++) {
+    for (size_t i = 0; i < other.productCount; i++)
+    {
         addProduct(other.products[i]);
     }
 }
@@ -70,7 +75,8 @@ Recipe::Recipe(Recipe &&other) noexcept
 
 Recipe &Recipe::operator=(const Recipe &other)
 {
-    if (this != &other) {
+    if (this != &other)
+    {
         Recipe tmp(other);
         *this = std::move(tmp);
     }
@@ -79,7 +85,8 @@ Recipe &Recipe::operator=(const Recipe &other)
 
 Recipe &Recipe::operator=(Recipe &&other) noexcept
 {
-    if (this != &other) {
+    if (this != &other)
+    {
         freeProducts();
         strcpy(dishName, other.dishName);
         products = other.products;
@@ -100,11 +107,13 @@ Recipe::~Recipe()
 
 bool Recipe::setDishName(const char *name)
 {
-    if (name == nullptr) {
+    if (name == nullptr)
+    {
         return false;
     }
     size_t len = std::strlen(name);
-    if (len > RECIPE_MAX_DISH_NAME_LEN) {
+    if (len > RECIPE_MAX_DISH_NAME_LEN)
+    {
         return false;
     }
     std::strncpy(dishName, name, RECIPE_MAX_DISH_NAME_LEN);
@@ -114,10 +123,12 @@ bool Recipe::setDishName(const char *name)
 
 bool Recipe::addProduct(const char *productName)
 {
-    if (productName == nullptr) {
+    if (productName == nullptr)
+    {
         return false;
     }
-    if (productCount == productCapacity) {
+    if (productCount == productCapacity)
+    {
         growProducts();
     }
     products[productCount] = copyStr(productName);
@@ -137,7 +148,8 @@ size_t Recipe::getProductCount() const
 
 const char *Recipe::getProduct(size_t index) const
 {
-    if (index >= productCount) {
+    if (index >= productCount)
+    {
         return nullptr;
     }
     return products[index];

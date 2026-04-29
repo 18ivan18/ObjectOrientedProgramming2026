@@ -1,17 +1,21 @@
 #include "Order.h"
 #include "Restaurant.h"
+
 #include <fstream>
 #include <iostream>
 
 bool writeOrdersBinary(const char *path, const Order *orders, size_t count)
 {
     std::ofstream out(path, std::ios::binary);
-    if (!out.is_open()) {
+    if (!out.is_open())
+    {
         return false;
     }
     out.write(reinterpret_cast<const char *>(&count), sizeof(count));
-    for (size_t i = 0; i < count; i++) {
-        if (!orders[i].serialize(out)) {
+    for (size_t i = 0; i < count; i++)
+    {
+        if (!orders[i].serialize(out))
+        {
             return false;
         }
     }
@@ -39,7 +43,8 @@ int main()
     demo[2].addDish("musaka");
     demo[2].addDish("fried eggs");
 
-    if (!writeOrdersBinary(ordersPath, demo, 3)) {
+    if (!writeOrdersBinary(ordersPath, demo, 3))
+    {
         std::cerr << "Неуспешен запис на демо двоичен файл с поръчки.\n";
         return 1;
     }

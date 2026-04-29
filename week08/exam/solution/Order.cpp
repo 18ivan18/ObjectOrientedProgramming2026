@@ -2,10 +2,12 @@
 #include <cstring>
 #include <istream>
 #include <ostream>
+#include <cstddef>
 
 bool cstrEqual(const char *a, const char *b)
 {
-    if (a == nullptr || b == nullptr) {
+    if (a == nullptr || b == nullptr)
+    {
         return a == b;
     }
     return std::strcmp(a, b) == 0;
@@ -52,18 +54,23 @@ void Order::setTime(Time t)
 
 bool Order::addDish(const char *name)
 {
-    if (name == nullptr) {
+    if (name == nullptr)
+    {
         return false;
     }
     size_t len = std::strlen(name);
-    if (len > ORDER_MAX_DISH_NAME_LEN) {
+    if (len > ORDER_MAX_DISH_NAME_LEN)
+    {
         return false;
     }
-    if (dishCount >= ORDER_MAX_DISHES) {
+    if (dishCount >= ORDER_MAX_DISHES)
+    {
         return false;
     }
-    for (size_t i = 0; i < dishCount; i++) {
-        if (cstrEqual(dishNames[i], name)) {
+    for (size_t i = 0; i < dishCount; i++)
+    {
+        if (cstrEqual(dishNames[i], name))
+        {
             return false;
         }
     }
@@ -101,7 +108,8 @@ size_t Order::getDishCount() const
 
 const char *Order::getDishName(size_t index) const
 {
-    if (index >= dishCount) {
+    if (index >= dishCount)
+    {
         return nullptr;
     }
     return dishNames[index];
@@ -112,26 +120,34 @@ bool skipOrderSerialized(std::istream &in)
     size_t table = 0;
     unsigned char hm[2] = {0, 0};
     size_t dcount = 0;
-    if (!readRaw(in, &table, sizeof(table))) {
+    if (!readRaw(in, &table, sizeof(table)))
+    {
         return false;
     }
-    if (!readRaw(in, hm, sizeof(hm))) {
+    if (!readRaw(in, hm, sizeof(hm)))
+    {
         return false;
     }
-    if (!readRaw(in, &dcount, sizeof(dcount))) {
+    if (!readRaw(in, &dcount, sizeof(dcount)))
+    {
         return false;
     }
-    for (size_t i = 0; i < dcount; i++) {
+    for (size_t i = 0; i < dcount; i++)
+    {
         unsigned char len = 0;
-        if (!readRaw(in, &len, sizeof(len))) {
+        if (!readRaw(in, &len, sizeof(len)))
+        {
             return false;
         }
-        if (len > ORDER_MAX_DISH_NAME_LEN) {
+        if (len > ORDER_MAX_DISH_NAME_LEN)
+        {
             return false;
         }
         char scratch[128];
-        if (len > 0) {
-            if (!readRaw(in, scratch, len)) {
+        if (len > 0)
+        {
+            if (!readRaw(in, scratch, len))
+            {
                 return false;
             }
         }
@@ -148,39 +164,48 @@ bool Order::deserialize(std::istream &in)
     size_t table = 0;
     unsigned char hm[2] = {0, 0};
     size_t dcount = 0;
-    if (!readRaw(in, &table, sizeof(table))) {
+    if (!readRaw(in, &table, sizeof(table)))
+    {
         return false;
     }
-    if (!readRaw(in, hm, sizeof(hm))) {
+    if (!readRaw(in, hm, sizeof(hm)))
+    {
         return false;
     }
-    if (!readRaw(in, &dcount, sizeof(dcount))) {
+    if (!readRaw(in, &dcount, sizeof(dcount)))
+    {
         return false;
     }
-    if (dcount > ORDER_MAX_DISHES) {
+    if (dcount > ORDER_MAX_DISHES)
+    {
         return false;
     }
 
     setTableNumber(table);
     setTime(hm[0], hm[1]);
 
-    for (size_t i = 0; i < dcount; i++) {
+    for (size_t i = 0; i < dcount; i++)
+    {
         unsigned char len = 0;
-        if (!readRaw(in, &len, sizeof(len))) {
+        if (!readRaw(in, &len, sizeof(len)))
+        {
             clearDishes();
             tableNumber = 0;
             receivedTime = {0, 0};
             return false;
         }
-        if (len > ORDER_MAX_DISH_NAME_LEN) {
+        if (len > ORDER_MAX_DISH_NAME_LEN)
+        {
             clearDishes();
             tableNumber = 0;
             receivedTime = {0, 0};
             return false;
         }
         char buf[128];
-        if (len > 0) {
-            if (!readRaw(in, buf, len)) {
+        if (len > 0)
+        {
+            if (!readRaw(in, buf, len))
+            {
                 clearDishes();
                 tableNumber = 0;
                 receivedTime = {0, 0};
@@ -188,7 +213,8 @@ bool Order::deserialize(std::istream &in)
             }
         }
         buf[len] = '\0';
-        if (!addDish(buf)) {
+        if (!addDish(buf))
+        {
             clearDishes();
             tableNumber = 0;
             receivedTime = {0, 0};
@@ -204,26 +230,34 @@ bool Order::serialize(std::ostream &out) const
     unsigned char hm[2] = {static_cast<unsigned char>(receivedTime.hour),
                            static_cast<unsigned char>(receivedTime.minute)};
     size_t dcount = dishCount;
-    if (!writeRaw(out, &table, sizeof(table))) {
+    if (!writeRaw(out, &table, sizeof(table)))
+    {
         return false;
     }
-    if (!writeRaw(out, hm, sizeof(hm))) {
+    if (!writeRaw(out, hm, sizeof(hm)))
+    {
         return false;
     }
-    if (!writeRaw(out, &dcount, sizeof(dcount))) {
+    if (!writeRaw(out, &dcount, sizeof(dcount)))
+    {
         return false;
     }
-    for (size_t i = 0; i < dishCount; i++) {
+    for (size_t i = 0; i < dishCount; i++)
+    {
         size_t len = std::strlen(dishNames[i]);
-        if (len > ORDER_MAX_DISH_NAME_LEN) {
+        if (len > ORDER_MAX_DISH_NAME_LEN)
+        {
             return false;
         }
         unsigned char l = static_cast<unsigned char>(len);
-        if (!writeRaw(out, &l, sizeof(l))) {
+        if (!writeRaw(out, &l, sizeof(l)))
+        {
             return false;
         }
-        if (len > 0) {
-            if (!writeRaw(out, dishNames[i], static_cast<std::streamsize>(len))) {
+        if (len > 0)
+        {
+            if (!writeRaw(out, dishNames[i], static_cast<std::streamsize>(len)))
+            {
                 return false;
             }
         }

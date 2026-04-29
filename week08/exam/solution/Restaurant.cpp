@@ -2,9 +2,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <limits>
-#include <new>
-#include <utility>
 
 const size_t LINE_BUF = 4096;
 
@@ -30,57 +27,69 @@ Restaurant::Restaurant(const char *recipesTextPath)
     : recipes(nullptr), recipeCount(0), recipeCapacity(0), pendingOrders(nullptr), pendingCount(0),
       pendingCapacity(0)
 {
-    if (recipesTextPath == nullptr) {
+    if (recipesTextPath == nullptr)
+    {
         std::cerr << "Грешка: липсва път до файл с рецепти.\n";
         return;
     }
 
     std::ifstream in(recipesTextPath);
-    if (!in.is_open()) {
+    if (!in.is_open())
+    {
         std::cerr << "Грешка: не може да се отвори файлът с рецепти: " << recipesTextPath << '\n';
         return;
     }
 
     char line[LINE_BUF];
     std::size_t nRecipes = 0;
-    if (!(in >> nRecipes)) {
+    if (!(in >> nRecipes))
+    {
         std::cerr << "Грешка: невалиден брой рецепти в началото на файла.\n";
         return;
     }
     in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    for (std::size_t r = 0; r < nRecipes; r++) {
-        if (!in.getline(line, LINE_BUF)) {
+    for (std::size_t r = 0; r < nRecipes; r++)
+    {
+        if (!in.getline(line, LINE_BUF))
+        {
             std::cerr << "Грешка: неочакван край на файл при четене на рецепта.\n";
             freeAll();
             return;
         }
         {
             std::size_t n = std::strlen(line);
-            if (n > 0 && line[n - 1] == '\r') {
+            if (n > 0 && line[n - 1] == '\r')
+            {
                 line[n - 1] = '\0';
             }
         }
-        if (line[0] == '\0') {
+        if (line[0] == '\0')
+        {
             std::cerr << "Грешка: празно име на рецепта.\n";
             freeAll();
             return;
         }
-        if (std::strlen(line) > RECIPE_MAX_DISH_NAME_LEN) {
+        if (std::strlen(line) > RECIPE_MAX_DISH_NAME_LEN)
+        {
             std::cerr << "Грешка: име на рецепта твърде дълго.\n";
             freeAll();
             return;
         }
-        if (hasRecipeNamed(line)) {
+        if (hasRecipeNamed(line))
+        {
             std::cerr << "Предупреждение: пропускане на дублирана рецепта \"" << line << "\".\n";
             std::size_t skipM = 0;
-            if (!(in >> skipM)) {
+            if (!(in >> skipM))
+            {
                 freeAll();
                 return;
             }
             in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            for (std::size_t p = 0; p < skipM; p++) {
-                if (!in.getline(line, LINE_BUF)) {
+            for (std::size_t p = 0; p < skipM; p++)
+            {
+                if (!in.getline(line, LINE_BUF))
+                {
                     freeAll();
                     return;
                 }
@@ -89,33 +98,39 @@ Restaurant::Restaurant(const char *recipesTextPath)
         }
 
         Recipe recipe;
-        if (!recipe.setDishName(line)) {
+        if (!recipe.setDishName(line))
+        {
             std::cerr << "Грешка: невалидно име на ястие.\n";
             freeAll();
             return;
         }
 
         std::size_t m = 0;
-        if (!(in >> m)) {
+        if (!(in >> m))
+        {
             std::cerr << "Грешка: невалиден брой продукти.\n";
             freeAll();
             return;
         }
         in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        for (std::size_t p = 0; p < m; p++) {
-            if (!in.getline(line, LINE_BUF)) {
+        for (std::size_t p = 0; p < m; p++)
+        {
+            if (!in.getline(line, LINE_BUF))
+            {
                 std::cerr << "Грешка: липсва ред с продукт.\n";
                 freeAll();
                 return;
             }
             {
                 std::size_t n = std::strlen(line);
-                if (n > 0 && line[n - 1] == '\r') {
+                if (n > 0 && line[n - 1] == '\r')
+                {
                     line[n - 1] = '\0';
                 }
             }
-            if (!recipe.addProduct(line)) {
+            if (!recipe.addProduct(line))
+            {
                 std::cerr << "Грешка: неуспешно добавяне на продукт.\n";
                 freeAll();
                 return;
@@ -130,10 +145,12 @@ Restaurant::Restaurant(const Restaurant &other)
     : recipes(nullptr), recipeCount(0), recipeCapacity(0), pendingOrders(nullptr), pendingCount(0),
       pendingCapacity(0)
 {
-    for (size_t i = 0; i < other.recipeCount; i++) {
+    for (size_t i = 0; i < other.recipeCount; i++)
+    {
         appendRecipe(other.recipes[i]);
     }
-    for (size_t i = 0; i < other.pendingCount; i++) {
+    for (size_t i = 0; i < other.pendingCount; i++)
+    {
         appendPendingOrder(other.pendingOrders[i]);
     }
 }
@@ -156,7 +173,8 @@ Restaurant::Restaurant(Restaurant &&other) noexcept
 
 Restaurant &Restaurant::operator=(const Restaurant &other)
 {
-    if (this != &other) {
+    if (this != &other)
+    {
         Restaurant tmp(other);
         *this = std::move(tmp);
     }
@@ -165,7 +183,8 @@ Restaurant &Restaurant::operator=(const Restaurant &other)
 
 Restaurant &Restaurant::operator=(Restaurant &&other) noexcept
 {
-    if (this != &other) {
+    if (this != &other)
+    {
         freeAll();
         recipes = other.recipes;
         recipeCount = other.recipeCount;
@@ -190,12 +209,14 @@ Restaurant::~Restaurant()
 
 void Restaurant::ensureRecipeCapacity()
 {
-    if (recipeCount < recipeCapacity) {
+    if (recipeCount < recipeCapacity)
+    {
         return;
     }
     size_t newCap = recipeCapacity == 0 ? 4 : recipeCapacity * 2;
     Recipe *next = new Recipe[newCap];
-    for (size_t i = 0; i < recipeCount; i++) {
+    for (size_t i = 0; i < recipeCount; i++)
+    {
         next[i] = std::move(recipes[i]);
     }
     delete[] recipes;
@@ -205,12 +226,14 @@ void Restaurant::ensureRecipeCapacity()
 
 void Restaurant::ensurePendingCapacity()
 {
-    if (pendingCount < pendingCapacity) {
+    if (pendingCount < pendingCapacity)
+    {
         return;
     }
     size_t newCap = pendingCapacity == 0 ? 4 : pendingCapacity * 2;
     Order *next = new Order[newCap];
-    for (size_t i = 0; i < pendingCount; i++) {
+    for (size_t i = 0; i < pendingCount; i++)
+    {
         next[i] = std::move(pendingOrders[i]);
     }
     delete[] pendingOrders;
@@ -248,11 +271,14 @@ void Restaurant::appendPendingOrder(Order &&order)
 
 const Recipe *Restaurant::findRecipeByName(const char *dishName) const
 {
-    if (dishName == nullptr) {
+    if (dishName == nullptr)
+    {
         return nullptr;
     }
-    for (size_t i = 0; i < recipeCount; i++) {
-        if (std::strcmp(recipes[i].getDishName(), dishName) == 0) {
+    for (size_t i = 0; i < recipeCount; i++)
+    {
+        if (std::strcmp(recipes[i].getDishName(), dishName) == 0)
+        {
             return recipes + i;
         }
     }
@@ -266,13 +292,15 @@ bool Restaurant::hasRecipeNamed(const char *name) const
 
 void Restaurant::newOrder(const char *binaryOrdersPath, size_t orderIndex)
 {
-    if (binaryOrdersPath == nullptr) {
+    if (binaryOrdersPath == nullptr)
+    {
         std::cerr << "Грешка: липсва път до двоичен файл с поръчки.\n";
         return;
     }
 
     std::ifstream in(binaryOrdersPath, std::ios::binary);
-    if (!in.is_open()) {
+    if (!in.is_open())
+    {
         std::cerr << "Грешка: двоичният файл не съществува или не може да се отвори: " << binaryOrdersPath
                   << '\n';
         return;
@@ -280,30 +308,36 @@ void Restaurant::newOrder(const char *binaryOrdersPath, size_t orderIndex)
 
     size_t orderCount = 0;
     in.read(reinterpret_cast<char *>(&orderCount), sizeof(orderCount));
-    if (!in) {
+    if (!in)
+    {
         std::cerr << "Грешка: неуспешно четене на брой поръчки от двоичния файл.\n";
         return;
     }
 
-    if (orderIndex >= orderCount) {
+    if (orderIndex >= orderCount)
+    {
         std::cerr << "Грешка: номерът на поръчката е извън диапазона (има " << orderCount << " поръчки).\n";
         return;
     }
 
-    for (size_t i = 0; i < orderIndex; i++) {
-        if (!skipOrderSerialized(in)) {
+    for (size_t i = 0; i < orderIndex; i++)
+    {
+        if (!skipOrderSerialized(in))
+        {
             std::cerr << "Грешка: повреден двоичен файл при прескачане към поръчка " << orderIndex << ".\n";
             return;
         }
     }
 
     Order loaded;
-    if (!loaded.deserialize(in)) {
+    if (!loaded.deserialize(in))
+    {
         std::cerr << "Грешка: неуспешно четене на поръчка от двоичния файл.\n";
         return;
     }
 
-    if (!loaded.isValid()) {
+    if (!loaded.isValid())
+    {
         std::cerr << "Поръчката е невалидна (невалидно време) и няма да бъде добавена.\n";
         return;
     }
@@ -313,20 +347,23 @@ void Restaurant::newOrder(const char *binaryOrdersPath, size_t orderIndex)
 
 void Restaurant::report(const char *outputTextPath) const
 {
-    if (outputTextPath == nullptr) {
+    if (outputTextPath == nullptr)
+    {
         std::cerr << "Грешка: липсва път за изходен отчет.\n";
         return;
     }
 
     std::ofstream out(outputTextPath);
-    if (!out.is_open()) {
+    if (!out.is_open())
+    {
         std::cerr << "Грешка: не може да се създаде изходният файл: " << outputTextPath << '\n';
         return;
     }
 
     out << "Брой поръчки за изпълнение: " << pendingCount << "\n\n";
 
-    for (size_t o = 0; o < pendingCount; o++) {
+    for (size_t o = 0; o < pendingCount; o++)
+    {
         const Order &ord = pendingOrders[o];
         out << "--- Поръчка " << (o + 1) << " ---\n";
         out << "Маса: " << ord.getTableNumber() << '\n';
@@ -336,16 +373,22 @@ void Restaurant::report(const char *outputTextPath) const
         out << "Час: " << h << ':' << m << '\n';
         out << "Ястия и продукти:\n";
 
-        for (size_t d = 0; d < ord.getDishCount(); d++) {
+        for (size_t d = 0; d < ord.getDishCount(); d++)
+        {
             const char *dname = ord.getDishName(d);
             out << "  * " << dname << '\n';
             const Recipe *rec = findRecipeByName(dname);
-            if (rec == nullptr) {
+            if (rec == nullptr)
+            {
                 out << "      (няма рецепта в ресторанта)\n";
-            } else {
+            }
+            else
+            {
                 out << "      Продукти: ";
-                for (size_t p = 0; p < rec->getProductCount(); p++) {
-                    if (p > 0) {
+                for (size_t p = 0; p < rec->getProductCount(); p++)
+                {
+                    if (p > 0)
+                    {
                         out << " | ";
                     }
                     out << rec->getProduct(p);
