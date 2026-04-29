@@ -1,6 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
-#include "../../../utils/doctest.h"
+#include "../../utils/doctest.h"
 #include "String.cpp"
 
 TEST_SUITE("String Tests")

@@ -34,3 +34,5 @@
 # binary files
 *.dat
 .cursor
+.claude
+CLAUDE.md
