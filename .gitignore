@@ -30,9 +30,12 @@
 *.exe
 *.out
 *.app
+main
+week09/solutions/task3-matrix/matrix
 
 # binary files
 *.dat
 .cursor
 .claude
 CLAUDE.md
+.clang-format
