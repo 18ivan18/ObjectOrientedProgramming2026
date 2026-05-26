@@ -4,7 +4,7 @@ Vehicle::Vehicle(const std::string &regnum) : regnum(regnum)
 {
 }
 
-const std::string &Vehicle::getRegnum()
+const std::string &Vehicle::getRegnum() const
 {
     return regnum;
 }

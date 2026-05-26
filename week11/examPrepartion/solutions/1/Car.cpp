@@ -4,7 +4,7 @@ Car::Car(const std::string &regnum, bool isPolite, int numOfPassengers) : Vehicl
 
 double Car::getParkingPrice()
 {
-    return isPolite ? 1 : rand() % 8 + 2;
+    return isPolite ? 1 : rand() % 9 + 2;
 }
 
 Vehicle *Car::clone()

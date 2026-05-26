@@ -14,3 +14,8 @@ int Car::getSpeedAccordingToRoadType(RoadType)
 {
     return maxSpeed;
 }
+
+Vehicle *Car::clone() const
+{
+    return new Car(*this);
+}

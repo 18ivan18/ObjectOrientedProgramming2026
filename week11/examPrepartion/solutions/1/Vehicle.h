@@ -9,7 +9,7 @@ private:
 
 public:
     Vehicle(const std::string &regnum);
-    const std::string &getRegnum();
+    const std::string &getRegnum() const;
     virtual double getParkingPrice() = 0;
     virtual Vehicle *clone() = 0;
     virtual ~Vehicle();

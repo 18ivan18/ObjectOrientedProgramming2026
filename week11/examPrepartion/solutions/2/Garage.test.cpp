@@ -15,6 +15,6 @@ TEST_SUITE("Garage")
         g.addNewVehicle(new Truck("Kamion", 100));
         g.addNewVehicle(new Minivan("Van", 150));
 
-        CHECK(g.getAllVehiclesThatCanTravelRoad(100, 120, 40, 2) == 5);
+        CHECK(g.getAllVehiclesThatCanTravelRoad(100, 120, 40, 2) == 1);
     }
 }

@@ -21,4 +21,10 @@ int Truck::getSpeedAccordingToRoadType(RoadType rt)
     case RoadType::ThirdClass:
         return 10;
     }
+    return 0;
+}
+
+Vehicle *Truck::clone() const
+{
+    return new Truck(*this);
 }

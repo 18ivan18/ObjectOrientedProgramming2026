@@ -48,11 +48,15 @@ InterpolationPair::InterpolationPair(const std::string &key, const std::string &
 std::string InterpolationPair::interpolate(const std::string &value)
 {
     std::string output;
-    std::vector<char[100]> replacements(interpolations.size());
-    for (int i = 0; i < interpolations.size(); i++)
+    std::vector<std::string> replacements(interpolations.size());
+    for (size_t i = 0; i < interpolations.size(); i++)
     {
         std::cout << interpolations[i].tagString.c_str() + sequenceStart.size() << ": ";
-        std::cin.getline(replacements[i], 100);
+        std::getline(std::cin, replacements[i]);
+        if (replacements[i].size() > 100)
+        {
+            replacements[i] = replacements[i].substr(0, 100);
+        }
     }
     int interpolationIndex = 0;
     bool print = true;

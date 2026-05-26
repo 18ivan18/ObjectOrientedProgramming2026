@@ -13,7 +13,7 @@ KNYAMLSpec::KNYAMLSpec(const KNYAMLSpec &other) : pairs(comparePtr<SimplePair>)
 {
     for (size_t i = 0; i < other.pairs.getSize(); i++)
     {
-        this->pairs.add(other.pairs.getData()[i]);
+        this->pairs.add(other.pairs.getData()[i]->clone());
     }
 }
 
@@ -24,7 +24,7 @@ KNYAMLSpec &KNYAMLSpec::operator=(const KNYAMLSpec &rhs)
         free();
         for (size_t i = 0; i < rhs.pairs.getSize(); i++)
         {
-            this->pairs.add(rhs.pairs.getData()[i]);
+            this->pairs.add(rhs.pairs.getData()[i]->clone());
         }
     }
     return *this;

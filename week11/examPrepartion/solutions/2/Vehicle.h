@@ -1,6 +1,6 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
-#include "String.h"
+#include "../../../utils/String.h"
 #include "RoadType.h"
 
 class Vehicle
@@ -12,6 +12,8 @@ protected:
 public:
     Vehicle(const String &make, int maxSpeed);
     virtual int getSpeedAccordingToRoadType(RoadType rt) = 0;
+    virtual Vehicle *clone() const = 0;
+    virtual ~Vehicle() = default;
 };
 
 #endif

@@ -21,4 +21,10 @@ int Minivan::getSpeedAccordingToRoadType(RoadType rt)
     case RoadType::ThirdClass:
         return maxSpeed / 3;
     }
+    return 0;
+}
+
+Vehicle *Minivan::clone() const
+{
+    return new Minivan(*this);
 }
