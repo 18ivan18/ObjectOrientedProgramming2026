@@ -316,3 +316,58 @@ static Error newFailedAssertion(const char*);
 Result<int>(3) == int() -> true
 Result<int>(5) == Error() -> false
 Result<int>(“Error Message”) == Error() -> true
+
+## Задача 8 — `Array<T, N>`: Статичен масив с алгоритми
+
+Имплементирай шаблонен клас `Array<T, N>`, където `N` е **compile-time константа** (non-type template параметър):
+
+```cpp
+Array<int, 5>    arr;   // масив от 5 int-a
+Array<double, 3> vec;   // масив от 3 double-a
+```
+
+Изисквания за класа:
+- `T& operator[](size_t i)` и `const T& operator[](size_t i) const`
+- `size_t size() const` — връща `N`
+- `void print() const` — принтира елементите в удобен формат
+
+Напиши следните **свободни функции-шаблони**, работещи с `Array<T, N>`:
+
+| Функция | Описание |
+|---------|----------|
+| `min(arr)` | Връща най-малкия елемент |
+| `max(arr)` | Връща най-големия елемент |
+| `sum(arr)` | Връща сумата на всички елементи |
+| `find(arr, value)` | Връща индекса на първото срещане, `-1` ако не е намерено |
+| `sort(arr)` | Сортира масива на място (selection sort) |
+| `reverse(arr)` | Обръща масива на място |
+
+Демонстрирай, че всички функции работят и с `Array<int, N>`, и с `Array<double, N>`.
+
+## Задача 9 — `Polynomial<N>`: Полином от степен N
+
+Имплементирай шаблонен клас `Polynomial<N>`, представящ полином от степен `N`:
+
+p(x) = c₀ + c₁x + c₂x² + ... + cₙxᴺ
+
+Използвай `Array<double, N+1>` от Задача 8 за вътрешно пазене на коефициентите.
+
+Изисквания:
+- `double& operator[](size_t i)` — достъп до i-тия коефициент (на xⁱ)
+- `double evaluate(double x) const` — пресмята стойността на полинома в точка x (използвай метода на Хорнер)
+- `Polynomial<N> operator+(const Polynomial<N>&) const` — събиране на два полинома с еднаква степен
+- `Polynomial<N> operator*(double scalar) const` — умножение по скалар
+- `void print() const` — принтира полинома в четим вид (пропуска нулеви членове)
+
+```cpp
+Polynomial<2> p;
+p[0] = 1.0;  // константен член
+p[1] = 2.0;  // коефициент пред x
+p[2] = 3.0;  // коефициент пред x^2
+
+p.print();           // 3x^2 + 2x + 1
+p.evaluate(2.0);     // 17.0  (3*4 + 2*2 + 1)
+```
+
+**Метод на Хорнер:** вместо да смяташ всяка степен поотделно, преобразувай полинома:
+`c₀ + x(c₁ + x(c₂ + x(... + x·cₙ)))` — само N умножения.
