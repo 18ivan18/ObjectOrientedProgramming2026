@@ -8,14 +8,22 @@
 
 #### :three: Classes, methods, this
 
-#### :four: Constructor, Destructor
+#### :four: Constructors, destructors
 
-#### :five: Copy constructor, copy assignment operator
+#### :five: Copy constructor, copy assignment operator; first custom dynamic-array and string
 
-#### :six: Move semantics
+#### :six: Move semantics, rule of five
 
-#### :seven: File streams
+#### :seven: File streams (fstream, ifstream, ofstream)
 
 #### :eight: Inheritance
 
-#### :nine: Generics and statisc
+#### :nine: Templates, static members
+
+#### :keycap_ten: Polymorphism, virtual functions, vtables, abstract classes, multiple inheritance
+
+#### 1️⃣1️⃣ Object slicing, virtual clone(), SOLID principles
+
+#### 1️⃣2️⃣ Design patterns — Singleton, Factory, Abstract Factory, Command, CRTP mixins (UniqueIdentifiable, Singleton base)
+
+#### 1️⃣3️⃣ Design patterns continued — Observer; integrative tasks combining patterns, inheritance and file I/O
